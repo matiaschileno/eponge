@@ -11,10 +11,8 @@ class EpongeElo {
     10000
   )}
 
-  getKMultiplier(scoreDelta, winnerElo, loserElo) {
-    const scoreDeltaRatio = Math.log(Math.abs(scoreDelta) + 1)
-    const eloDeltaRatio = (2.2 / ((winnerElo - loserElo) * .001 + 2.2));
-    return scoreDeltaRatio * eloDeltaRatio
+  getKMultiplier(scoreDelta) {
+    return 1.5 * (1 + 1 / (1 + Math.exp(5 - scoreDelta / 3)))
   }
 
   /**
