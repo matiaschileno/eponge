@@ -21,7 +21,7 @@ app.use(bodyParser.json());
   })
 
   router.post('/game', async function(req, res) {
-    const { player1Id, player2Id, sets } = req.body;
+    const { player1Id, player2Id, sets, simulate } = req.body;
     const player1 = await db.get(`select * from player where player_id=${player1Id}`);
     const player2 = await db.get(`select * from player where player_id=${player2Id}`);
     let player1TotalScore = 0;
@@ -52,17 +52,19 @@ app.use(bodyParser.json());
     const elo = new EpongeElo();
 
     const [winnerNewElo, loserNewElo] = elo.gameResultingElo(scoreDelta, winner.elo, loser.elo);
-    await db.run(`update player set elo=${winnerNewElo} where player_id=${winner.player_id}`);
-    await db.run(`update player set elo=${loserNewElo} where player_id=${loser.player_id}`);
-    const test = await db.run(
-      `insert into game(winner_id, loser_id) values (${winner.player_id}, ${loser.player_id})`
-    );
-    const { game_id } = await db.get("select last_insert_rowid() as game_id");
-    for (let set of sets) {
-      await db.run(
-        'insert into set_(game_id, player1_id, player2_id, player1_score, player2_score) values ' +
-        `(${game_id}, ${set.player1Id}, ${set.player2Id}, ${set.player1Score}, ${set.player2Score})`
+    if (!simulate) {
+      await db.run(`update player set elo=${winnerNewElo} where player_id=${winner.player_id}`);
+      await db.run(`update player set elo=${loserNewElo} where player_id=${loser.player_id}`);
+      const test = await db.run(
+        `insert into game(winner_id, loser_id) values (${winner.player_id}, ${loser.player_id})`
       );
+      const { game_id } = await db.get("select last_insert_rowid() as game_id");
+      for (let set of sets) {
+        await db.run(
+          'insert into set_(game_id, player1_id, player2_id, player1_score, player2_score) values ' +
+          `(${game_id}, ${set.player1Id}, ${set.player2Id}, ${set.player1Score}, ${set.player2Score})`
+        );
+      }
     }
     res.send({winnerNewElo, loserNewElo});
   });
