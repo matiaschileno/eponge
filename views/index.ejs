@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body class="container">
+    <main>
+      <div class="home">
+        <h1>Éponge</h1>
+        <ul>
+          <% players.forEach(function(player) { %>
+            <li>
+              <strong><%= player.name %></strong>
+              elo <%= player.elo %>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+      <div class="add-game">
+        <form method="POST" action="/game" enctype="application/json">
+          <div>
+            <label for="player1Id">Joueur 1</label>
+            <select type="number" name="player1Id">
+              <% players.forEach(function(player) { %>
+                <option value="<%= player.player_id %>"><%= player.name %></option>
+              <% }); %>
+            </select>
+            <label for="player2Id">Joueur 2</label>
+            <select type="number" name="player2Id">
+              <% players.forEach(function(player) { %>
+                <option value="<%= player.player_id %>"><%= player.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="set1">
+            <p>1er set</p>
+            <input type="number" min=0 name="player1Scores[]" />
+            <input type="number" min=0 name="player2Scores[]" />
+          </div>
+          <div class="set2">
+            <p>2ème set</p>
+            <input type="number" min=0 name="player1Scores[]" />
+            <input type="number" min=0 name="player2Scores[]" />
+          </div>
+          <div class="set3">
+            <p>3ème set</p>
+            <input type="number" min=0 name="player1Scores[]" />
+            <input type="number" min=0 name="player2Scores[]" />
+          </div>
+          <input type="submit" value="enregistrer" />
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
