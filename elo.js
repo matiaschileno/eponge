@@ -2,17 +2,19 @@ const Elo = require('arpad');
 
 class EpongeElo {
   constructor() {
-    this.elo = new Elo({
-      default: 32,
-      2100: 24,
-      2400: 16
-    },
-    100,
-    10000
-  )}
+    this.elo = new Elo(
+      {
+        default: 32,
+        2100: 24,
+        2400: 16,
+      },
+      100,
+      10000
+    );
+  }
 
   getKMultiplier(scoreDelta) {
-    return 1.5 * (1 + 1 / (1 + Math.exp(5 - scoreDelta / 3)))
+    return 1.5 * (1 + 1 / (1 + Math.exp(5 - scoreDelta / 3)));
   }
 
   /**
@@ -37,20 +39,39 @@ class EpongeElo {
     }
 
     return rating;
-  };
+  }
 
   gameResultingElo(scoreDelta, winnerElo, loserElo) {
-    const [winnerExpectedScore, loserExpectedScore] = this.elo.bothExpectedScores(winnerElo, loserElo);
+    const [
+      winnerExpectedScore,
+      loserExpectedScore,
+    ] = this.elo.bothExpectedScores(winnerElo, loserElo);
     const kMultiplier = this.getKMultiplier(scoreDelta, winnerElo, loserElo);
     console.log(kMultiplier);
-    const winnerNewRating = this.newRating(winnerExpectedScore, 1, winnerElo, kMultiplier);
-    console.log("winner base new rating", this.elo.newRating(winnerExpectedScore, 1, winnerElo))
-    console.log("winner new rating", winnerNewRating);
-    const loserNewRating = this.newRating(loserExpectedScore, 0, loserElo, kMultiplier);
-    console.log("loser base new rating", this.elo.newRating(loserExpectedScore, 0, loserElo))
-    console.log("loser new rating", loserNewRating);
+    const winnerNewRating = this.newRating(
+      winnerExpectedScore,
+      1,
+      winnerElo,
+      kMultiplier
+    );
+    console.log(
+      'winner base new rating',
+      this.elo.newRating(winnerExpectedScore, 1, winnerElo)
+    );
+    console.log('winner new rating', winnerNewRating);
+    const loserNewRating = this.newRating(
+      loserExpectedScore,
+      0,
+      loserElo,
+      kMultiplier
+    );
+    console.log(
+      'loser base new rating',
+      this.elo.newRating(loserExpectedScore, 0, loserElo)
+    );
+    console.log('loser new rating', loserNewRating);
     return [winnerNewRating, loserNewRating];
   }
 }
 
-module.exports = EpongeElo
+module.exports = EpongeElo;

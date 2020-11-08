@@ -1,51 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <body class="container">
+  <header>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  </header>
+  <body class="container mx-auto mt-4 font-sans bg-gray-200">
     <main>
-      <div class="home">
-        <h1>Éponge</h1>
-        <ul>
-          <% players.forEach(function(player) { %>
-            <li>
-              <strong><%= player.name %></strong>
-              elo <%= player.elo %>
-            </li>
-          <% }); %>
-        </ul>
-      </div>
-      <div class="add-game">
-        <form method="POST" action="/game" enctype="application/json">
-          <div>
-            <label for="player1Id">Joueur 1</label>
-            <select type="number" name="player1Id">
-              <% players.forEach(function(player) { %>
-                <option value="<%= player.player_id %>"><%= player.name %></option>
+      <h1 class="title text-2xl mb-6 text-center tracking-widest">
+        Éponge &#127955;
+      </h1>
+
+      <div
+        class="flex flex-row flex-wrap items-center justify-evenly space-y-4"
+      >
+        <div class="add-game text-center shadow-md rounded-3xl p-4 bg-white">
+          <form method="POST" action="/game" enctype="application/json">
+            <div class="players flex flex-row justify-between space-x-6">
+              <div>
+                <label for="player1Id"><strong>Joueur 1</strong></label>
+                <select type="number" class="border-b outline-none" name="player1Id">
+                  <% players.forEach(function(player) { %>
+                  <option value="<%= player.player_id %>">
+                    <%= player.name %>
+                  </option>
+                  <% }); %>
+                </select>
+              </div>
+              <div>
+                <label for="player2Id"><strong>Joueur 2</strong></label>
+                <select type="number" class="border-b outline-none" name="player2Id">
+                  <% players.forEach(function(player) { %>
+                  <option value="<%= player.player_id %>">
+                    <%= player.name %>
+                  </option>
+                  <% }); %>
+                </select>
+              </div>
+            </div>
+            <div class="sets m-4">
+              <div class="set1 m-2 flex flex-row justify-evenly">
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player1Scores[]"
+                />
+                <p class="w-20">1er set</p>
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player2Scores[]"
+                />
+              </div>
+              <div class="set2 m-2 flex flex-row justify-evenly">
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player1Scores[]"
+                />
+                <p class="w-20">2ème set</p>
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player2Scores[]"
+                />
+              </div>
+              <div class="set3 m-2 flex flex-row justify-evenly">
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player1Scores[]"
+                />
+                <p class="w-20">3ème set</p>
+                <input
+                  type="number"
+                  placeholder="0"
+                  class="w-16 text-center"
+                  min="0"
+                  name="player2Scores[]"
+                />
+              </div>
+            </div>
+
+            <input
+              type="submit"
+              class="cursor-pointer outline-none py-1 px-4 rounded-full hover:bg-green-400 border-green-400 border bg-white hover:text-white text-green-400 font-bold text-sm"
+              value="Enregistrer"
+            />
+          </form>
+        </div>
+
+        <div class="shadow-md rounded-3xl p-4 bg-white">
+          <table class="table-auto">
+            <thead>
+              <tr>
+                <th class="text-center border-b px-4 py-2">#</th>
+                <th class="border-b px-4 py-2">Joueur</th>
+                <th class="text-center border-b px-4 py-2">Elo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% players.forEach(function(player, index) { %>
+              <tr>
+                <td class="text-center"><%= index + 1 %></td>
+                <td class="border-l px-4 py-2"><%= player.name %></td>
+                <td class="text-center border-l px-4 py-2">
+                  <%= player.elo %>
+                </td>
+              </tr>
               <% }); %>
-            </select>
-            <label for="player2Id">Joueur 2</label>
-            <select type="number" name="player2Id">
-              <% players.forEach(function(player) { %>
-                <option value="<%= player.player_id %>"><%= player.name %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div class="set1">
-            <p>1er set</p>
-            <input type="number" min=0 name="player1Scores[]" />
-            <input type="number" min=0 name="player2Scores[]" />
-          </div>
-          <div class="set2">
-            <p>2ème set</p>
-            <input type="number" min=0 name="player1Scores[]" />
-            <input type="number" min=0 name="player2Scores[]" />
-          </div>
-          <div class="set3">
-            <p>3ème set</p>
-            <input type="number" min=0 name="player1Scores[]" />
-            <input type="number" min=0 name="player2Scores[]" />
-          </div>
-          <input type="submit" value="enregistrer" />
-        </form>
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   </body>
