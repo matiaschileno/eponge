@@ -4,9 +4,10 @@
   "description": "En tout cas, on peut dire que le soviet éponge",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build-css && node index.js",
+    "start": "node index.js",
     "dev": "npm run build-css && nodemon index.js",
     "build-css": "tailwindcss build main.css -o public/css/style.css",
+    "postinstall": "npm run build-css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
