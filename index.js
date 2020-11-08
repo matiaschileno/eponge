@@ -114,7 +114,7 @@ app.set('view engine', 'ejs');
   try {
     await db.open('eponge.db');
     console.log('connected to eponge db');
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   } catch (e) {
     console.error(e);
   }
